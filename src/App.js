@@ -51,7 +51,8 @@ class App extends React.Component {
       firstState: 'Hai Hello',
       cartCount: 0,
       alertOnCartCount: 10,
-      products: []
+      products: [],
+      cart:[]
     }
   }
 
@@ -60,6 +61,7 @@ class App extends React.Component {
       firstState: 'Hurray'
     })
     this.loadProducts()
+    this.initCart()
   }
 shouldComponentUpdate(prevProps, prevState) {
     console.log(this.State)
@@ -70,6 +72,15 @@ shouldComponentUpdate(prevProps, prevState) {
     return true
   }
 
+  initCart(){
+    let myCart = localStorage.getItem('cart')
+    myCart = JSON.parse(myCart)
+    console.log(myCart)
+    this.setState({
+      cart: myCart || []
+    })
+  }
+
   addCount() {
     const newCount = this.state.cartCount + 1;
     this.setState({
@@ -77,9 +88,32 @@ shouldComponentUpdate(prevProps, prevState) {
     })
   }
 
-  loadProducts(){
+  addToCart(product){
+    
+    const newCart= this.state.cart;
+    newCart.push(product);
+
+    localStorage.setItem('cart',JSON.stringify(newCart))
     this.setState({
-      products: productsArr
+      cart: newCart
+    })
+  }
+
+  loadProducts(){
+    fetch('http://my-json-server.typicode.com/shiyasvp92/sample_products/products',{
+      method: 'GET'
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      console.log(data)
+      this.setState({
+        products: data
+      })
+    })
+    .catch((error) =>{
+      console.error(error)
     })
   }
   loadPros(){
@@ -88,10 +122,14 @@ shouldComponentUpdate(prevProps, prevState) {
     })
   }
 
+  viewCart(){
+    console.log(this.state.cart)
+  }
+
   render() {
     const productsList = this.state.products.map((product)=>
    {
-     return productTile(this.addCount.bind(this),product)
+     return productTile(this.addCount.bind(this),this.addToCart.bind(this),product)
    } )
     return (
       <div>
@@ -99,12 +137,12 @@ shouldComponentUpdate(prevProps, prevState) {
           <a className="navbar-brand" href="#">Navbar</a>
           {this.state.firstState}
           
-          <button className="right" type="button">
-            Cart
-            (
-              {this.state.cartCount}
-            )
-        </button>
+          <button className="right" type="button" onClick={() =>{
+            this.viewCart();
+          }}>
+            Cart({this.state.cart.length})
+             /* ( {this.state.cartCount}) */
+        {</button>
         </nav>
         <div className="container">
           <div className="row">

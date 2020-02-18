@@ -1,7 +1,7 @@
 import React from "react";
-export default function productTile(addCount,product){
+export default function productTile(addCount,addToCart,product){
     return (
-      <div className="col-md-4 col-lg-3 col-sm-12" key= "product.id">
+      <div className="col-md-4 col-lg-3 col-sm-12" key={product.id}>
       <div className="card mb-3" style={{ "maxWidth": "540px", "color": "red" }}>
         <div className="row no-gutters">
           <div className="col-md-4">
@@ -16,6 +16,8 @@ export default function productTile(addCount,product){
                 <button className="btn btn-primary add-btn"
                 onClick={() => {
                     addCount()
+                    addToCart(product)
+                    
                   }}
                 >
                   add
