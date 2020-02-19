@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Link } from 'react-router-dom';
 import './App.css';
 import productTile from './Components/productTile';
 
@@ -57,12 +58,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      firstState: 'Hurray'
-    })
     this.loadProducts()
     this.initCart()
   }
+  
 shouldComponentUpdate(prevProps, prevState) {
     console.log(this.State)
     if (this.state.cartCount >= this.state.alertOnCartCount) {
@@ -135,14 +134,16 @@ shouldComponentUpdate(prevProps, prevState) {
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
           <a className="navbar-brand" href="#">Navbar</a>
+       
           {this.state.firstState}
-          
+          <Link to="/cart">
           <button className="right" type="button" onClick={() =>{
             this.viewCart();
           }}>
             Cart({this.state.cart.length})
-             /* ( {this.state.cartCount}) */
-        {</button>
+             
+        </button>
+        </Link>
         </nav>
         <div className="container">
           <div className="row">
@@ -162,3 +163,4 @@ shouldComponentUpdate(prevProps, prevState) {
 }
 
 export default App;
+//( {this.state.cartCount}) 
