@@ -26,10 +26,19 @@ clearCart(){
       })
 }
    
+removfrmCart(product){
+    const myCart=this.state.cart.slice()
+    const removProIndex=myCart.findIndex((currentitem)=> product.id==currentitem.id)
+    myCart.splice(removProIndex,1)
+    localStorage.setItem('cart',JSON.stringify(myCart))
+    this.setState({
+        cart: myCart
+      })
+}
     render(){
         const prodList = this.state.cart.map((product)=>
    {
-     return productTile(null,null,product)
+     return productTile(null,null,product,this.removfrmCart.bind(this))
    } )
         return(
         <div>
